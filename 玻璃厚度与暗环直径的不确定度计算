@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#define t 2.78
+#define N 5
+
+double func1(double d[]);
+double func2(double d[]);
+
+void main()
+{
+	double D[N]={10.92,10.95,10.88,10.90,10.93},
+	d[N]={3.24,3.25,3.23,3.24,3.24};
+	double u_d,u_D,u_n;
+    u_D=func1(D);
+    u_d=func2(d);
+}
+
+double func1(double d[])
+{
+	double avg_d=0.0,u_dA=0.0,u_dB;
+	int i;
+	for(i=0;i<N;i++)
+	{
+		avg_d+=d[i];
+	}
+	avg_d/=5;
+	for(i=0;i<N;i++)
+	{
+		u_dA+=((d[i]-avg_d)*(d[i]-avg_d));
+    } 
+    u_dA=sqrt(u_dA/5)*t;
+	printf("暗环直径A类不确定度%f\n",u_dA);
+	u_dB=0.1/(sqrt(3));
+	printf("暗环直径不确定度为%f\n",sqrt(u_dB*u_dB+u_dA*u_dA)); 
+	return sqrt(u_dB*u_dB+u_dA*u_dA);
+}
+double func2(double d[])
+{
+	double avg_d=0.0,u_dA=0.0,u_dB;
+	int i;
+	for(i=0;i<N;i++)
+	{
+		avg_d+=d[i];
+	}
+	avg_d/=5;
+	for(i=0;i<N;i++)
+	{
+		u_dA+=((d[i]-avg_d)*(d[i]-avg_d));
+    } 
+    u_dA=sqrt(u_dA/5)*t;
+	printf("玻璃厚度A类不确定度为%f\n",u_dA);
+	u_dB=0.1/(sqrt(3));
+	printf("玻璃厚度不确定度为%f\n",sqrt(u_dB*u_dB+u_dA*u_dA)); 
+	return sqrt(u_dB*u_dB+u_dA*u_dA);
+}
