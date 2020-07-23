@@ -1,0 +1,66 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#define t 2.78
+#define N 5
+
+double func1(double d[]);
+double func2(double d[]);
+
+void main()
+{
+	double l[N]={55.64,55.64,55.68,55.65,55.67},
+	d[N]={14.73,14.72,14.71,14.76,14.70},f[N];
+	double u_d,u_D,u_f,avg_f;
+	int i;
+	for(i=0;i<N;i++)
+	{
+		f[i]=(l[i]*l[i]-d[i]*d[i])/4/l[i];
+		printf("f(%d)=%f\n",i+1,f[i]);
+		avg_f+=f[i];
+	}
+	printf("焦距f的平均值为：%f\n",avg_f/5);
+    u_D=func1(l);
+    u_d=func2(d);
+}
+
+double func1(double d[])
+{
+	double avg_d=0.0,u_dA=0.0,u_dB;
+	int i;
+	for(i=0;i<N;i++)
+	{
+		avg_d+=d[i];
+	}
+	avg_d/=5;
+	for(i=0;i<N;i++)
+	{
+		u_dA+=((d[i]-avg_d)*(d[i]-avg_d));
+    } 
+    u_dA=sqrt(u_dA/5)*t;
+	printf("物屏距离L的A类不确定度%f\n",u_dA);
+	u_dB=0.01/(sqrt(3));
+	printf("物屏距离L的不确定度为%f\n",sqrt(u_dB*u_dB+u_dA*u_dA));
+	printf("avg:%f\n",avg_d); 
+	return sqrt(u_dB*u_dB+u_dA*u_dA);
+}
+double func2(double d[])
+{
+	double avg_d=0.0,u_dA=0.0,u_dB;
+	int i;
+	for(i=0;i<N;i++)
+	{
+		avg_d+=d[i];
+	}
+	avg_d/=5;
+	for(i=0;i<N;i++)
+	{
+		u_dA+=((d[i]-avg_d)*(d[i]-avg_d));
+    } 
+    u_dA=sqrt(u_dA/5)*t;
+	printf("两次成象距离A类不确定度为%f\n",u_dA);
+	u_dB=0.01/(sqrt(3));
+	printf("两次成象距离不确定度为%f\n",sqrt(u_dB*u_dB+u_dA*u_dA)); 
+	printf("avg:%f\n",avg_d);
+	return sqrt(u_dB*u_dB+u_dA*u_dA);
+}
