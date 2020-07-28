@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+#define t 2.78   
+#define N 5
+
+double func(double d[]);
+
+void main()
+{
+	double D[3][N]={{2.5,2.6,2.6,2.7,2.6},{5.2,5.2,5.1,5.3,5.1},{7.8,7.8,7.9,7.8,7.8}};  //输入单缝宽度数据 
+	double l[N]={1038.2,1038.4,1037.9,1038.2,1038};             //输入物屏距离 
+	double u[3],u_l;                     //定义不确定度 
+	int i,j;
+	for(i=0;i<3;i++)  u[i]=func(D[i]);
+	u_l=func(l);
+	for(i=0;i<3;i++) printf("x%d的不确定度为%f\n",i+1,u[i]);
+	printf("l的不确定度为%f：\n",u_l); 
+	double max=0.0;
+    for(i=0;i<3;i++)
+    {
+    	if(max<u[i]) max=u[i],j=i;
+	}
+	printf("x%d的不确定度最大，为%f,选其计算最后的不确定度结果\n",j+1,max);
+	
+}
+
+double func(double d[])
+{
+	double avg_d=0.0,u_dA=0.0,u_dB;
+	int i;
+	for(i=0;i<N;i++)
+	{
+		avg_d+=d[i];
+	}
+	avg_d/=5;                   //计算平均值 
+	for(i=0;i<N;i++)
+	{
+		u_dA+=((d[i]-avg_d)*(d[i]-avg_d));
+    } 
+    u_dA=sqrt(u_dA/5)*t;         //得出A类不确定度 
+	u_dB=0.1/(sqrt(3));             //B类不确定度 
+	return sqrt(u_dB*u_dB+u_dA*u_dA);   //返回不确定度 
+}
